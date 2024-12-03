@@ -64,6 +64,8 @@ int main()
         nebulae[i].pos.x = windowDimensions[0] + i * 300;
     }
 
+    float finishLine = nebulae[sizeOfNebulae - 1].pos.x;
+
     // nebula x velocity (p/s)
     int nebVel = -200;
 
@@ -165,6 +167,9 @@ int main()
             // update the position of each nebula
             nebulae[i].pos.x += nebVel * dT;
         }
+
+        // update finish line
+        finishLine += nebVel * dT;
 
         // update scarfy position
         scarfyData.pos.y += velocity * dT;

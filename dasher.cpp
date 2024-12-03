@@ -97,6 +97,8 @@ int main()
     Texture2D foreground = LoadTexture("textures/foreground.png");
     float fgX = 0;
 
+    bool collision = false;
+
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
@@ -186,14 +188,46 @@ int main()
             nebulae[i] = updateAnimData(nebulae[i], dT, 7);
         }
 
-        // Draw Nebula
-        for (size_t i = 0; i < sizeOfNebulae; ++i)
+
+        for (AnimData nebula : nebulae)
         {
-            DrawTextureRec(nebula, nebulae[i].rec, nebulae[i].pos, WHITE);
+            float pad = 50;
+            Rectangle nebRec = {
+                nebula.pos.x + pad,
+                nebula.pos.y + pad,
+                nebula.rec.width - 2 * pad,
+                nebula.rec.height - 2 * pad
+            };
+
+            Rectangle scarfyRec = {
+                scarfyData.pos.x,
+                scarfyData.pos.y,
+                scarfyData.rec.width,
+                scarfyData.rec.height
+            };
+
+            if (CheckCollisionRecs(nebRec, scarfyRec))
+            {
+                collision = true;
+            }
         }
 
-        // Draw Scarfy
-        DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
+        if (collision)
+        {
+            // lose the game
+        }
+        else
+        {
+            // Draw Nebula
+            for (size_t i = 0; i < sizeOfNebulae; ++i)
+            {
+                DrawTextureRec(nebula, nebulae[i].rec, nebulae[i].pos, WHITE);
+            }
+
+            // Draw Scarfy
+            DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
+        }
+
         EndDrawing();
     }
     UnloadTexture(scarfy);

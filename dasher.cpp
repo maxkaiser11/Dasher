@@ -8,30 +8,38 @@ int main()
 
     InitWindow(windowWidth, windowHeight, "Dasher");
 
-    // acceleration due to gravity (pixels/frame)/frame
-    const int gravity = 1;
+    // acceleration due to gravity (pixels/s)/s
+    const int gravity = 1000;
 
     Texture2D scarfy = LoadTexture("textures/scarfy.png");
+    Rectangle scarfyRec;
+    scarfyRec.width = scarfy.width / 6;
+    scarfyRec.height = scarfy.height;
+    scarfyRec.x = 0;
+    scarfyRec.y = 0;
+
+    Vector2 scarfyPos;
+    scarfyPos.x = windowWidth / 2 - scarfyRec.width / 2;
+    scarfyPos.y = windowHeight - scarfyRec.height;
 
     // rect dimensions
-    const int width = 50;
-    const int height = 80;
-
-    int posY = windowHeight - height;
     int velocity = 0;
 
     bool isInAir = false;
 
-    const int jumpVel = -22;
+    // pixels per second
+    const int jumpVel = -600;
 
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
+        const float dt = GetFrameTime();
+
         BeginDrawing();
         ClearBackground(WHITE);
 
         // Perform ground check
-        if (posY >= windowHeight - height)
+        if (scarfyPos.y >= windowHeight - scarfyRec.height)
         {
             // rect is on the ground
             velocity = 0;
@@ -40,7 +48,7 @@ int main()
         else
         {
             //  apply gravity
-            velocity += gravity;
+            velocity += gravity * dt;
             isInAir = true;
         }
 
@@ -51,12 +59,12 @@ int main()
         }
 
         // update position
-        posY += velocity;
+        scarfyPos.y += velocity * dt;
 
-        DrawRectangle(windowWidth / 2, posY, width, height, BLUE);
-
+        DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
         EndDrawing();
     }
+    UnloadTexture(scarfy);
     CloseWindow();
 
     return 0;

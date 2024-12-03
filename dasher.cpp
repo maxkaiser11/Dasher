@@ -11,11 +11,11 @@ struct AnimData
 
 int main()
 {
-    // window
-    const int windowWidth = 512;
-    const int windowHeight = 380;
+    int windowDimensions[2];
+    windowDimensions[0] = 512; // window width
+    windowDimensions[1] = 380; // window height
 
-    InitWindow(windowWidth, windowHeight, "Dasher");
+    InitWindow(windowDimensions[0], windowDimensions[1], "Dasher");
 
     // acceleration due to gravity (pixels/s)/s
     const int gravity = 1000;
@@ -27,8 +27,8 @@ int main()
     scarfyData.rec.height = scarfy.height;
     scarfyData.rec.x = 0;
     scarfyData.rec.y = 0;
-    scarfyData.pos.x = windowWidth / 2 - scarfyData.rec.width / 2;
-    scarfyData.pos.y = windowHeight - scarfyData.rec.height;
+    scarfyData.pos.x = windowDimensions[0] / 2 - scarfyData.rec.width / 2;
+    scarfyData.pos.y = windowDimensions[1] - scarfyData.rec.height;
     scarfyData.frame = 0;
     scarfyData.updateTime = 1.0 / 12.0;
     scarfyData.runningTime = 0.0;
@@ -36,17 +36,17 @@ int main()
     // Nebula variables
     Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
     AnimData nebData{
-        {0.0, 0.0, nebula.width / 8, nebula.height / 8}, // rec
-        {windowWidth, windowHeight - nebula.height / 8}, // vector2
-        0,                                               // frame
-        1.0 / 12.0,                                      // float updateTime
-        0};                                              // float running time
+        {0.0, 0.0, nebula.width / 8, nebula.height / 8},                // rec
+        {windowDimensions[0], windowDimensions[1] - nebula.height / 8}, // vector2
+        0,                                                              // frame
+        1.0 / 12.0,                                                     // float updateTime
+        0};                                                             // float running time
 
     AnimData neb2Data{
-        {0.0, 0.0, nebula.width / 8, nebula.height / 8},       // rec
-        {windowWidth + 300, windowHeight - nebula.height / 8}, // vector2
-        0,                                                     // frame
-        1.0 / 16.0,                                            // float updateTime
+        {0.0, 0.0, nebula.width / 8, nebula.height / 8},                      // rec
+        {windowDimensions[0] + 300, windowDimensions[1] - nebula.height / 8}, // vector2
+        0,                                                                    // frame
+        1.0 / 16.0,                                                           // float updateTime
         0};
 
     // nebula x velocity (p/s)
@@ -69,7 +69,7 @@ int main()
         ClearBackground(WHITE);
 
         // Perform ground check
-        if (scarfyData.pos.y >= windowHeight - scarfyData.rec.height)
+        if (scarfyData.pos.y >= windowDimensions[1] - scarfyData.rec.height)
         {
             // rect is on the ground
             velocity = 0;
